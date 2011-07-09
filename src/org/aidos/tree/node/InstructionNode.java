@@ -11,6 +11,12 @@ public abstract class InstructionNode extends Node {
 	 */
 	private int codePosition;
 	
+	/**
+	 * Constructs a new {@link InstructionNode}.
+	 * @param owner The owner of this node.
+	 * @param codePosition The position of this instruction in it's owner.
+	 * @param opcode The opcode of this instruction.
+	 */
 	public InstructionNode(MethodDecNode owner, int codePosition, int opcode) {
 		super(opcode);
 	}

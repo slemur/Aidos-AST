@@ -2,7 +2,10 @@ package org.aidos.tree.node;
 
 import org.aidos.tree.ClassFile;
 
-
+/**
+ * Represents a declared field in a {@link ClassFile}.
+ * @author `Discardedx2
+ */
 public class FieldDecNode extends Node {
 	
 	/**

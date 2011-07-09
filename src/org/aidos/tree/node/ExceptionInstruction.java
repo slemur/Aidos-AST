@@ -2,6 +2,10 @@ package org.aidos.tree.node;
 
 import org.objectweb.asm.Label;
 
+/**
+ * Represents an exception in a {@link MethodDecNode}.
+ * @author `Discardedx2
+ */
 public class ExceptionInstruction extends InstructionNode {
 
 	/**
@@ -25,6 +29,15 @@ public class ExceptionInstruction extends InstructionNode {
 	 */
 	private Label end;
 	
+	/**
+	 * Constructs a new ExceptionInstruction.
+	 * @param owner The owner of this node.
+	 * @param position This node's code position.
+	 * @param type This exception's type.
+	 * @param start This start of this exception.
+	 * @param handler The handler of this exception.
+	 * @param end The end of this exception.
+	 */
 	public ExceptionInstruction(MethodDecNode owner, int position, String type, Label start, Label handler, Label end) {
 		super(owner, position, -1);
 		this.owner = owner;

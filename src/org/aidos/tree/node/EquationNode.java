@@ -72,7 +72,12 @@ public class EquationNode extends Node {
 		this.operator = operator;
 	}
 
-	public int invokeAndGetValue(boolean leftFirst) {
+	/**
+	 * Invokes the {@link IntInstruction}s with the set operator.
+	 * @param leftFirst {@code true} if the left operator should be 
+	 * @return The invoked value of the two nodes.
+	 */
+	public int getInvokedValue() {
 		int leftVal = left.getValue();
 		int rightVal = right.getValue();
 		switch(operator) {
@@ -87,34 +92,16 @@ public class EquationNode extends Node {
 		case XOR:
 			return leftVal ^ rightVal;
 		case SUBTRACT:
-			if (leftFirst) { 
-				return leftVal - rightVal;
-			}
 			return rightVal - leftVal;
 		case DIVIDE:
-			if (leftFirst) {
-				return leftVal / rightVal;
-			}
 			return rightVal / leftVal;
 		case LEFT_SHIFT:
-			if (leftFirst) {
-				return leftVal << rightVal;
-			}
 			return rightVal << leftVal;
 		case RIGHT_SHIFT:
-			if (leftFirst) {
-				return leftVal >> rightVal;
-			}
 			return rightVal >> leftVal;
 		case RIGHT_LOGICAL_SHIFT:
-			if (leftFirst) {
-				return leftVal >>> rightVal;
-			}
 			return rightVal >>> leftVal;
 		case MODULUS:
-			if (leftFirst) {
-				return leftVal % rightVal;
-			}
 			return rightVal % leftVal;
 		}
 		return -1;

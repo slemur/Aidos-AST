@@ -33,6 +33,18 @@ public class LocalVarNode extends InstructionNode {
 	 */
 	private int index;
 	
+	/**
+	 * Constructs a new LocalVarnode
+	 * @param owner The owner of this node.
+	 * @param name The name of this node.
+	 * @param desc The description of this node.
+	 * @param signature The signature of this node.
+	 * @param start The start label of this node.
+	 * @param end The end label of this node.
+	 * @param index This node's index.
+	 * @param position This node's code position in it's owner.
+	 * @param opcode This node's opcode.
+	 */
 	public LocalVarNode(MethodDecNode owner, String name, String desc, String signature, Label start, Label end, int index, int position, int opcode) {
 		super(owner, position, opcode);
 		this.owner = owner;

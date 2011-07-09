@@ -17,8 +17,10 @@ public class IntInstruction extends InstructionNode {
 	
 	/**
 	 * Constructs a new {@link IntInstruction}.
-	 * @param opcode
-	 * @param value
+	 * @param owner The owner of this node.
+	 * @param position The code position of this node in it's owner.
+	 * @param opcode The opcode of this node.
+	 * @param value The operand value of this node.
 	 */
 	public IntInstruction(MethodDecNode owner, int position, int opcode, int value) {
 		super(owner, position, opcode);

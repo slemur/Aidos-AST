@@ -4,3 +4,4 @@ Convert to a 3AC
 Finish parsing more types of instructions
 Finish the README (Add lisence)
 Finish documenting (maybe rewrite some of the documenting?)
+Write a ClassEncoder (to output modified files)

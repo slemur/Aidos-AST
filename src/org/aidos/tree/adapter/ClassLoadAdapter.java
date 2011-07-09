@@ -5,7 +5,6 @@ import org.aidos.tree.ClassInterface;
 import org.aidos.tree.Jar;
 import org.aidos.tree.node.FieldDecNode;
 import org.aidos.tree.node.MethodDecNode;
-import org.aidos.tree.visitor.BytecodeVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.EmptyVisitor;

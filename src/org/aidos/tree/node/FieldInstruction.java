@@ -22,9 +22,11 @@ public class FieldInstruction extends InstructionNode {
 	
 	/**
 	 * Constructs a new {@link FieldInstruction}.
-	 * @param descriptor The descriptor of this field instruction.
-	 * @param name The name of this field instruction.
-	 * @param fieldInstruction The field instruction of this node.
+	 * @param owner The owner of this field.
+	 * @param position The code position of this node inside it's owner.
+	 * @param opcode This node's opcode.
+	 * @param name This node's name.
+	 * @param descriptor This node's descriptor.
 	 */
 	public FieldInstruction(MethodDecNode owner, int position, int opcode, String name, String descriptor) {
 		super(owner, position, opcode);
