@@ -1,6 +1,6 @@
 package org.aidos.tree.node.expression;
 
-import org.aidos.tree.node.IntInstruction;
+import org.aidos.tree.node.PushInstruction;
 
 /**
  * Represents an addition expression for the opcode IADD.
@@ -8,13 +8,18 @@ import org.aidos.tree.node.IntInstruction;
  */
 public class AddExpression extends ArithmeticExpressionNode {
 
-	public AddExpression(IntInstruction left, IntInstruction right) {
+	/**
+	 * Constructs a new {@link AddExpression}.
+	 * @param left The integer on the left hand assignment.
+	 * @param right The integer on the right hand assignment.
+	 */
+	public AddExpression(PushInstruction left, PushInstruction right) {
 		super(left, right, Operator.ADD);
 	}
 
 	@Override
 	public void invoke() {
-		invokedValue = ((IntInstruction) left).getValue() + ((IntInstruction) right).getValue();
+		invokedValue = ((PushInstruction) left).getValue() + ((PushInstruction) right).getValue();
 	}
 
 }

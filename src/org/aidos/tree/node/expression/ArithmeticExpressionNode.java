@@ -1,8 +1,8 @@
 package org.aidos.tree.node.expression;
 
-import org.aidos.tree.node.IntInstruction;
 import org.aidos.tree.node.InvocableNode;
 import org.aidos.tree.node.Node;
+import org.aidos.tree.node.PushInstruction;
 import org.objectweb.asm.Opcodes;
 
 
@@ -27,9 +27,9 @@ public abstract class ArithmeticExpressionNode extends InvocableNode {
 		ADD(Opcodes.IADD), SUBTRACT(Opcodes.ISUB),
 		MULTIPLY(Opcodes.IMUL), DIVIDE(Opcodes.IDIV),
 		AND(Opcodes.IAND), OR(Opcodes.IOR),
-		NOT(-1), XOR(Opcodes.IXOR),
-		LEFT_SHIFT(-1), RIGHT_SHIFT(-1), 
-		RIGHT_LOGICAL_SHIFT(-1), MODULUS(-1);
+		XOR(Opcodes.IXOR), LEFT_SHIFT(-1), 
+		RIGHT_SHIFT(-1), RIGHT_LOGICAL_SHIFT(-1),
+		MODULUS(Opcodes.IREM);
 		
 		/**
 		 * The opcode of this operator.
@@ -59,7 +59,7 @@ public abstract class ArithmeticExpressionNode extends InvocableNode {
 	 * @param right The node on the right side of the expression.
 	 * @param operator The operator used in the expression.
 	 */
-	public ArithmeticExpressionNode(IntInstruction left, IntInstruction right, Operator operator) {
+	public ArithmeticExpressionNode(PushInstruction left, PushInstruction right, Operator operator) {
 		super(left, right, operator.getOpcode());
 		this.operator = operator;
 	}

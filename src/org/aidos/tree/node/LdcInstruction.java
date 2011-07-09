@@ -2,7 +2,7 @@ package org.aidos.tree.node;
 
 import org.objectweb.asm.Opcodes;
 
-public class LdcInstruction extends InstructionNode {
+public class LdcInstruction extends PushInstruction {
 
 	/**
 	 * This represents the LDC constant from the constant pool.
@@ -16,7 +16,7 @@ public class LdcInstruction extends InstructionNode {
 	 * @param constant The constant value of this instruction.
 	 */
 	public LdcInstruction(MethodDecNode owner, int position, Object constant) {
-		super(owner, position, Opcodes.LDC);
+		super(owner, constant instanceof Integer ? (Integer) constant : -1, position, Opcodes.LDC);
 		this.constant = constant;
 	}
 	
