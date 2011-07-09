@@ -2,6 +2,10 @@ package org.aidos.tree.node;
 
 import org.objectweb.asm.Label;
 
+/**
+ * Represents a local variable.
+ * @author `Discardedx2
+ */
 public class LocalVarNode extends InstructionNode {
 
 	/**

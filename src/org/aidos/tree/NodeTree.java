@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
 
-
-
 /**
  * Represents our abstract syntax tree.
  * @author `Discardedx2

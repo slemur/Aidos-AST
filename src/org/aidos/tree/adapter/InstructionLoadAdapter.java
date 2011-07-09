@@ -12,6 +12,10 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodAdapter;
 import org.objectweb.asm.MethodVisitor;
 
+/**
+ * This class adapts method instructions and stores them in memory.
+ * @author `Discardedx2
+ */
 public class InstructionLoadAdapter extends MethodAdapter {
 
 	/**

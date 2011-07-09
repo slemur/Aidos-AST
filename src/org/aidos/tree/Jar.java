@@ -16,6 +16,10 @@ import org.aidos.tree.adapter.ClassLoadAdapter;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 
+/**
+ * This class is used to load and store files from a jar file.
+ * @author `Discardedx2.
+ */
 public class Jar {
 
 	/**

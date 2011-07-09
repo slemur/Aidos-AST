@@ -2,6 +2,10 @@ package org.aidos.tree.node;
 
 import org.objectweb.asm.Opcodes;
 
+/**
+ * Represents an instruction that loads a value from the constant pool.
+ * @author `Discardedx2
+ */
 public class LdcInstruction extends PushInstruction {
 
 	/**

@@ -1,12 +1,7 @@
 import org.aidos.tree.ClassFile;
 import org.aidos.tree.Jar;
 import org.aidos.tree.NodeTree;
-import org.aidos.tree.node.InstructionNode;
-import org.aidos.tree.node.JumpInstruction;
 import org.aidos.tree.node.MethodDecNode;
-import org.aidos.tree.util.InstructionPointer;
-import org.aidos.tree.util.InstructionUtil;
-
 
 public class Test {
 

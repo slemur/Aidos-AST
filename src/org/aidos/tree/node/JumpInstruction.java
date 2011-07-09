@@ -4,6 +4,10 @@ import org.objectweb.asm.Label;
 
 import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
 
+/**
+ * Represents a GOTO instruction.
+ * @author `Discardedx2
+ */
 public class JumpInstruction extends InstructionNode {
 
 	/**
