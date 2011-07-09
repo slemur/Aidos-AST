@@ -13,10 +13,10 @@ public class Test {
 		for (ClassFile cf : tree.getClassFiles().values()) {
 			for (MethodDecNode mdn : cf.getMethods().values()) {
 				InstructionPointer pointer = new InstructionPointer(mdn.getInstructions());
-				for (InstructionNode node = pointer.current(); pointer.hasNext();) {
+				for (InstructionNode current = pointer.current(); pointer.hasNext();) {
 					InstructionNode next = pointer.next();
 					InstructionNode prev = pointer.prev();
-					System.out.println(prev+", "+node+", "+next);
+					System.out.println(prev+", "+current+", "+next);
 				}
 			}
 		}

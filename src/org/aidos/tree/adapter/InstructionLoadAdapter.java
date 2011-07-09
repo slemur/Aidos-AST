@@ -1,6 +1,6 @@
 package org.aidos.tree.adapter;
 
-import org.aidos.tree.node.ExceptionInstruction;
+import org.aidos.tree.ClassException;
 import org.aidos.tree.node.FieldInstruction;
 import org.aidos.tree.node.IntInstruction;
 import org.aidos.tree.node.LdcInstruction;
@@ -61,10 +61,8 @@ public class InstructionLoadAdapter extends MethodAdapter {
 	
 	@Override
 	public void visitTryCatchBlock(Label start, Label end, Label handler, String type) {
-		ExceptionInstruction exception = new ExceptionInstruction(method, pointer.getOffset(), type, start, handler, end);
+		ClassException exception = new ClassException(method, type, start, handler, end);
 		method.getExceptions().add(exception);
-		method.getInstructions()[pointer.getOffset()] = exception;
-		pointer.increment();
 		super.visitTryCatchBlock(start, end, handler, type);
 	}
 

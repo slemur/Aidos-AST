@@ -3,6 +3,7 @@ package org.aidos.tree.node;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aidos.tree.ClassException;
 import org.aidos.tree.ClassFile;
 import org.aidos.tree.util.InstructionUtil;
 
@@ -36,7 +37,7 @@ public class MethodDecNode extends Node {
 	/**
 	 * This method's exceptions.
 	 */
-	private List<ExceptionInstruction> exceptions = new ArrayList<ExceptionInstruction>();
+	private List<ClassException> exceptions = new ArrayList<ClassException>();
 	/**
 	 * This method's instructions.
 	 */
@@ -58,6 +59,10 @@ public class MethodDecNode extends Node {
 		this.modifier = modifier;
 	}
 
+	/**
+	 * Gets the info of this method by parsing it through a {@link StringBuilder}.
+	 * @return The method info.
+	 */
 	public String info() {
 		StringBuilder sb = new StringBuilder("Name: "+name)
 		.append("\nOwner: "+owner.getName())
@@ -66,7 +71,7 @@ public class MethodDecNode extends Node {
 		.append("\nSignature: "+signature);
 		if (exceptions.size() > 0) {
 			sb.append("\nExceptions:");
-			for (ExceptionInstruction e : exceptions) {
+			for (ClassException e : exceptions) {
 				sb.append("\n\t"+e.getType());
 			}
 		}
@@ -155,7 +160,7 @@ public class MethodDecNode extends Node {
 	 * Gets this node's exception list.
 	 * @return The exceptions.
 	 */
-	public List<ExceptionInstruction> getExceptions() {
+	public List<ClassException> getExceptions() {
 		return exceptions;
 	}
 
