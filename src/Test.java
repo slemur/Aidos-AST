@@ -1,29 +1,19 @@
-import org.aidos.tree.ClassFile;
 import org.aidos.tree.Jar;
 import org.aidos.tree.NodeTree;
-import org.aidos.tree.node.InstructionNode;
-import org.aidos.tree.node.LdcInstruction;
-import org.aidos.tree.node.MethodDecNode;
-import org.aidos.tree.util.InstructionPointer;
+import org.aidos.tree.node.IntInstruction;
+import org.aidos.tree.node.expression.AddExpression;
+
+import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
 
 
 public class Test {
 
 	public static void main(String[] args) {
 		NodeTree tree = new NodeTree(Jar.load("./runescape_out.jar"));
-		for (ClassFile cf : tree.getClassFiles().values()) {
-			if(cf.getName().equals("Player")) {
-				for (MethodDecNode mdn : cf.getMethods()) {
-					InstructionPointer pointer = new InstructionPointer(mdn.getInstructions());
-					while(pointer.hasCurrent()) {
-						InstructionNode current = pointer.current();
-						if (current instanceof LdcInstruction) {
-							LdcInstruction ldc = (LdcInstruction) current;
-							System.out.println(ldc.getConstant());
-						}
-					}
-				}
-			}
-		}
+		IntInstruction left = new IntInstruction(null, 0, Opcodes.BIPUSH, 5);
+		IntInstruction right = new IntInstruction(null, 0, Opcodes.BIPUSH, 10);
+		AddExpression add = new AddExpression(left, right);
+		add.invoke();
+		System.out.println(add.getInvokedValue());
 	}
 }

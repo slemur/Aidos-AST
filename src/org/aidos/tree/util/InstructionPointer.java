@@ -74,7 +74,7 @@ public class InstructionPointer {
 		if (offset + 1 > instructions.length) {
 			throw new NotValidInstructionException("Next instruction is unavailable.");
 		}
-		return instructions[offset++];
+		return instructions[offset + 1];
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class InstructionPointer {
 		if (offset - 1 < 0) {
 			throw new NotValidInstructionException("Previous instruction is unavailable.");
 		}
-		return instructions[offset--];
+		return instructions[offset - 1];
 	}
 
 	/**
