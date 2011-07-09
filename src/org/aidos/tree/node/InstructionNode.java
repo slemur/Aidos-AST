@@ -19,6 +19,7 @@ public abstract class InstructionNode extends Node {
 	 */
 	public InstructionNode(MethodDecNode owner, int codePosition, int opcode) {
 		super(opcode);
+		this.codePosition = codePosition;
 	}
 
 	/**

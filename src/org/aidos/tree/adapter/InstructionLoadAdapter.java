@@ -70,7 +70,7 @@ public class InstructionLoadAdapter extends MethodAdapter {
 	
 	@Override
 	public void visitJumpInsn(int opcode, Label label) {
-		method.getInstructions()[pointer.getOffset()] = new JumpInstruction(method, label, pointer.getOffset(), opcode);
+		method.getInstructions()[pointer.getOffset()] = new JumpInstruction(method, label, pointer.getOffset());
 		pointer.increment();
 		super.visitJumpInsn(opcode, label);
 	}

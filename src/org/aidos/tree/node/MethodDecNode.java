@@ -79,7 +79,7 @@ public class MethodDecNode extends Node {
 			sb.append("\nInstructions:");
 			for (InstructionNode instruction : instructions) {
 				if (instruction != null) {
-					sb.append("\n\t\tOpcode: "+InstructionUtil.getInstructionName(instruction.getOpcode())+" ( "+instruction.getOpcode()+" ), type: "+instruction);
+					sb.append("\n\t\tOpcode: "+InstructionUtil.getInstructionName(instruction.getOpcode())+" ( "+instruction.getOpcode()+" ), offset: "+instruction.getCodePosition()+", type: "+instruction);
 				}
 			}
 		}

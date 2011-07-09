@@ -5,23 +5,18 @@ import org.aidos.tree.node.InstructionNode;
 import org.aidos.tree.node.JumpInstruction;
 import org.aidos.tree.node.MethodDecNode;
 import org.aidos.tree.util.InstructionPointer;
+import org.aidos.tree.util.InstructionUtil;
 
 
 public class Test {
 
 	public static void main(String[] args) {
 		NodeTree tree = new NodeTree(Jar.load("./runescape_out.jar"));
-		for (ClassFile cf : tree.getClassFiles().values()) {
-			if (cf.getName().equals("client")) {
-				for (MethodDecNode mdn : cf.getMethods()) {
-					InstructionPointer pointer = new InstructionPointer(mdn.getInstructions());
-					for (InstructionNode current = pointer.current(); pointer.hasCurrent();) {
-						if (current instanceof JumpInstruction) {
-							JumpInstruction jump = (JumpInstruction) current;
-							System.out.println(jump+" ::: Instruction offset: "+jump.getCodePosition()+", Jump to info: "+jump.getJumpTo().info);
-						}
-					}
-				}
+		ClassFile client = tree.getClassFiles().get("client");
+		for (MethodDecNode mdn : client.getMethods()) {
+			if (mdn.getName().equals("main")) {
+				System.out.println(mdn.info());
+				return;
 			}
 		}
 	}

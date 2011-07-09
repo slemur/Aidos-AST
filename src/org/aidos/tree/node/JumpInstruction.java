@@ -2,6 +2,8 @@ package org.aidos.tree.node;
 
 import org.objectweb.asm.Label;
 
+import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
+
 public class JumpInstruction extends InstructionNode {
 
 	/**
@@ -9,8 +11,15 @@ public class JumpInstruction extends InstructionNode {
 	 */
 	private Label jumpTo;
 	
-	public JumpInstruction(MethodDecNode owner, Label label, int codePosition, int opcode) {
-		super(owner, codePosition, opcode);
+	/**
+	 * Constructs a new {@link JumpInstruction}.
+	 * @param owner This node's owner.
+	 * @param label The label to jump to.
+	 * @param codePosition This node's code position.
+	 * @param opcode This node's opcode.
+	 */
+	public JumpInstruction(MethodDecNode owner, Label label, int codePosition) {
+		super(owner, codePosition, Opcodes.GOTO);
 		this.jumpTo = label;
 	}
 
