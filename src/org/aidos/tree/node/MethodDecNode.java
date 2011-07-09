@@ -41,7 +41,7 @@ public class MethodDecNode extends Node {
 	/**
 	 * This method's instructions.
 	 */
-	private InstructionNode[] instructions = new InstructionNode[10000];
+	private InstructionNode[] instructions = new InstructionNode[9200];
 
 	/**
 	 * Constructs a new {@link MethodDecNode}.

@@ -1,19 +1,28 @@
+import org.aidos.tree.ClassFile;
 import org.aidos.tree.Jar;
 import org.aidos.tree.NodeTree;
-import org.aidos.tree.node.IntInstruction;
-import org.aidos.tree.node.expression.AddExpression;
-
-import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
+import org.aidos.tree.node.InstructionNode;
+import org.aidos.tree.node.JumpInstruction;
+import org.aidos.tree.node.MethodDecNode;
+import org.aidos.tree.util.InstructionPointer;
 
 
 public class Test {
 
 	public static void main(String[] args) {
 		NodeTree tree = new NodeTree(Jar.load("./runescape_out.jar"));
-		IntInstruction left = new IntInstruction(null, 0, Opcodes.BIPUSH, 5);
-		IntInstruction right = new IntInstruction(null, 0, Opcodes.BIPUSH, 10);
-		AddExpression add = new AddExpression(left, right);
-		add.invoke();
-		System.out.println(add.getInvokedValue());
+		for (ClassFile cf : tree.getClassFiles().values()) {
+			if (cf.getName().equals("client")) {
+				for (MethodDecNode mdn : cf.getMethods()) {
+					InstructionPointer pointer = new InstructionPointer(mdn.getInstructions());
+					for (InstructionNode current = pointer.current(); pointer.hasCurrent();) {
+						if (current instanceof JumpInstruction) {
+							JumpInstruction jump = (JumpInstruction) current;
+							System.out.println(jump+" ::: Instruction offset: "+jump.getCodePosition()+", Jump to info: "+jump.getJumpTo().info);
+						}
+					}
+				}
+			}
+		}
 	}
 }

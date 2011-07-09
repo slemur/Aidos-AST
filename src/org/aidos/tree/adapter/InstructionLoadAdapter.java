@@ -3,6 +3,7 @@ package org.aidos.tree.adapter;
 import org.aidos.tree.ClassException;
 import org.aidos.tree.node.FieldInstruction;
 import org.aidos.tree.node.IntInstruction;
+import org.aidos.tree.node.JumpInstruction;
 import org.aidos.tree.node.LdcInstruction;
 import org.aidos.tree.node.LocalVarNode;
 import org.aidos.tree.node.MethodDecNode;
@@ -65,6 +66,13 @@ public class InstructionLoadAdapter extends MethodAdapter {
 		ClassException exception = new ClassException(method, type, start, handler, end);
 		method.getExceptions().add(exception);
 		super.visitTryCatchBlock(start, end, handler, type);
+	}
+	
+	@Override
+	public void visitJumpInsn(int opcode, Label label) {
+		method.getInstructions()[pointer.getOffset()] = new JumpInstruction(method, label, pointer.getOffset(), opcode);
+		pointer.increment();
+		super.visitJumpInsn(opcode, label);
 	}
 
 	/**
