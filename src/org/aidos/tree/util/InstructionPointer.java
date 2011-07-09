@@ -180,6 +180,11 @@ public class InstructionPointer {
 		instructions[pos] = null;
 	}
 	
+	/**
+	 * Gets a node at a certain position.
+	 * @param pos The position to get the node at.
+	 * @return The node at the position.
+	 */
 	public InstructionNode get(int pos) {
 		if (pos < 0 || pos > instructions.length) {
 			throw new NotValidInstructionException("Instruction at "+pos+" is unavailable.");
@@ -187,6 +192,10 @@ public class InstructionPointer {
 		return instructions[pos];
 	}
 	
+	/**
+	 * Gets the node at the last position.
+	 * @return The node at the last position.
+	 */
 	public InstructionNode getLast() {
 		return instructions[getEmptySlot() - 1];
 	}
