@@ -1,9 +1,7 @@
 package org.aidos.tree;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.aidos.tree.node.FieldDecNode;
 import org.aidos.tree.node.MethodDecNode;
@@ -41,11 +39,11 @@ public class ClassFile {
 	/**
 	 * The parsed methods stored in seperate {@link MethodDecNode} for easy access.
 	 */
-	private Map<String, MethodDecNode> methods = new HashMap<String, MethodDecNode>();
+	private List<MethodDecNode> methods = new ArrayList<MethodDecNode>();
 	/**
 	 * The parsed fields stored in seperate {@link FieldDecNode} for easy access.
 	 */
-	private Map<String, FieldDecNode> fields = new HashMap<String, FieldDecNode>();
+	private List<FieldDecNode> fields = new ArrayList<FieldDecNode>();
 	
 	public ClassFile(int classVersion) {
 		this.classVersion = classVersion;
@@ -144,7 +142,7 @@ public class ClassFile {
 	 * Gets the methods.
 	 * @return the methods
 	 */
-	public Map<String, MethodDecNode> getMethods() {
+	public List<MethodDecNode> getMethods() {
 		return methods;
 	}
 
@@ -152,7 +150,7 @@ public class ClassFile {
 	 * Gets the fields.
 	 * @return the fields
 	 */
-	public Map<String, FieldDecNode> getFields() {
+	public List<FieldDecNode> getFields() {
 		return fields;
 	}
 }

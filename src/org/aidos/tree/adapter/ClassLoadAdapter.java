@@ -51,14 +51,14 @@ public class ClassLoadAdapter extends EmptyVisitor {
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 		MethodDecNode mdn = new MethodDecNode(classFile, name, desc, signature, access);
-		classFile.getMethods().put(name, mdn);
+		classFile.getMethods().add(mdn);
 		return new InstructionLoadAdapter(super.visitMethod(access, name, desc, signature, exceptions), mdn);
 	}
 
 	@Override
 	public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
 		FieldDecNode fdn = new FieldDecNode(classFile, name, desc, signature, access, value);
-		classFile.getFields().put(name, fdn);
+		classFile.getFields().add(fdn);
 		return super.visitField(access, name, desc, signature, value);
 	}
 

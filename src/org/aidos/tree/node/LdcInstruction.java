@@ -20,14 +20,6 @@ public class LdcInstruction extends InstructionNode {
 		this.constant = constant;
 	}
 	
-	@Override
-	public String toString() {
-		if (constant instanceof String) {
-			return (String) constant;
-		}
-		return super.toString();
-	}
-	
 	/**
 	 * Gets the constant.
 	 * @return The constant.

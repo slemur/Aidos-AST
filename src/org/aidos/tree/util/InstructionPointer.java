@@ -119,7 +119,7 @@ public class InstructionPointer {
 	 * Checks if there are more instructions to search through.
 	 * @return {@code true} if there are instructions to be searched, otherwise {@code false}.
 	 */
-	public boolean hasNext() {
+	public boolean hasCurrent() {
 		return current() != null && instructions.length > offset++;
 	}
 

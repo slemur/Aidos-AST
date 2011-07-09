@@ -38,6 +38,7 @@ public class InstructionLoadAdapter extends MethodAdapter {
 		super.visitIntInsn(opcode, operand);
 	}
 	
+	int count = 0;
 	@Override
 	public void visitLdcInsn(Object cst) {
 		method.getInstructions()[pointer.getOffset()] = new LdcInstruction(method, pointer.getOffset(), cst);
