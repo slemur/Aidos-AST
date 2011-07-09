@@ -30,4 +30,12 @@ public abstract class InstructionNode extends Node {
 		return codePosition;
 	}
 	
+	/**
+	 * Sets the code position of this instruction.
+	 * @param codePosition The code position to set.
+	 */
+	public void setCodePosition(int codePosition) {
+		this.codePosition = codePosition;
+	}
+	
 }

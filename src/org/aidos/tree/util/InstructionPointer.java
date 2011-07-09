@@ -1,7 +1,5 @@
 package org.aidos.tree.util;
 
-import java.util.Collections;
-
 import org.aidos.tree.exception.NotValidInstructionException;
 import org.aidos.tree.node.InstructionNode;
 import org.aidos.tree.node.MethodDecNode;
@@ -95,7 +93,9 @@ public class InstructionPointer {
 	 * @param add The instruction to add.
 	 */
 	public void addLast(InstructionNode add) {
-		instructions[getEmptySlot()] = add;
+		int last = getEmptySlot();
+		add.setCodePosition(last);
+		instructions[last] = add;
 	}
 	
 	/**
@@ -104,6 +104,9 @@ public class InstructionPointer {
 	 * @param add The instruction to add.
 	 */
 	public void addBefore(InstructionNode instruction, InstructionNode add) {
+		if (instruction.getCodePosition() - 1 < 0) {
+			throw new NotValidInstructionException("Instruction before "+instruction.getCodePosition()+" is not availiable.");
+		}
 		instructions[instruction.getCodePosition() - 1] = add;
 	}
 	
@@ -113,7 +116,10 @@ public class InstructionPointer {
 	 * @param add The instruction to add.
 	 */
 	public void addBefore(int pos, InstructionNode add) {
-		instructions[pos] = add;
+		if (pos - 1 < 0) {
+			throw new NotValidInstructionException("Instruction before "+(pos - 1)+" is not availiable.");
+		}
+		instructions[pos - 1] = add;
 	}
 	
 	/**
@@ -122,6 +128,9 @@ public class InstructionPointer {
 	 * @param add The instruction to add.
 	 */
 	public void addAfter(InstructionNode instruction, InstructionNode add) {
+		if (instruction.getCodePosition() + 1 > instructions.length) {
+			throw new NotValidInstructionException("Instruction after "+instruction.getCodePosition()+" is not availiable.");
+		}
 		instructions[instruction.getCodePosition() + 1] = add;
 	}
 	
@@ -131,6 +140,9 @@ public class InstructionPointer {
 	 * @param add The instruction to add.
 	 */
 	public void addAfter(int pos, InstructionNode add) {
+		if (pos + 1 > instructions.length) {
+			throw new NotValidInstructionException("Instruction after "+pos+" is not availiable.");
+		}
 		instructions[pos + 1] = add;
 	}
 	
@@ -166,6 +178,17 @@ public class InstructionPointer {
 	 */
 	public void remove(int pos) {
 		instructions[pos] = null;
+	}
+	
+	public InstructionNode get(int pos) {
+		if (pos < 0 || pos > instructions.length) {
+			throw new NotValidInstructionException("Instruction at "+pos+" is unavailable.");
+		}
+		return instructions[pos];
+	}
+	
+	public InstructionNode getLast() {
+		return instructions[getEmptySlot() - 1];
 	}
 
 	/**
