@@ -1,5 +1,7 @@
 package org.aidos.tree.util;
 
+import java.util.Collections;
+
 import org.aidos.tree.exception.NotValidInstructionException;
 import org.aidos.tree.node.InstructionNode;
 import org.aidos.tree.node.MethodDecNode;
@@ -87,6 +89,84 @@ public class InstructionPointer {
 		}
 		return instructions[offset - 1];
 	}
+	
+	/**
+	 * Adds an instruction to the last index.
+	 * @param add The instruction to add.
+	 */
+	public void addLast(InstructionNode add) {
+		instructions[getEmptySlot()] = add;
+	}
+	
+	/**
+	 * Adds an instruction before a specified instruction.
+	 * @param instruction The instruction to add before.
+	 * @param add The instruction to add.
+	 */
+	public void addBefore(InstructionNode instruction, InstructionNode add) {
+		instructions[instruction.getCodePosition() - 1] = add;
+	}
+	
+	/**
+	 * Adds an instruction before a specified position.
+	 * @param pos The position to add before.
+	 * @param add The instruction to add.
+	 */
+	public void addBefore(int pos, InstructionNode add) {
+		instructions[pos] = add;
+	}
+	
+	/**
+	 * Adds an instruction after a specified instruction.
+	 * @param instruction The instruction to add after.
+	 * @param add The instruction to add.
+	 */
+	public void addAfter(InstructionNode instruction, InstructionNode add) {
+		instructions[instruction.getCodePosition() + 1] = add;
+	}
+	
+	/**
+	 * Adds an instruction after a specified position.
+	 * @param pos The position to add after.
+	 * @param add The instruction to add.
+	 */
+	public void addAfter(int pos, InstructionNode add) {
+		instructions[pos + 1] = add;
+	}
+	
+	/**
+	 * Overwrites a specified instruction with another instruction.
+	 * @param instruction The instruction to overwrite.
+	 * @param replace The instruction to replace with.
+	 */
+	public void overwrite(InstructionNode instruction, InstructionNode replace) {
+		instructions[instruction.getCodePosition()] = replace;
+	}
+	
+	/**
+	 * Overwrites a specified instruction with another instruction.
+	 * @param pos The instruction to overwrite.
+	 * @param replace The instruction to replace with.
+	 */
+	public void overwrite(int pos, InstructionNode add) {
+		instructions[pos] = add;
+	}
+	
+	/**
+	 * Removes a specified instruction.
+	 * @param instruction The instruction to remove.
+	 */
+	public void remove(InstructionNode instruction) {
+		instructions[instruction.getCodePosition()] = null;
+	}
+	
+	/**
+	 * Removes an instruction at the specified index.
+	 * @param pos The index to remove the instruction from.
+	 */
+	public void remove(int pos) {
+		instructions[pos] = null;
+	}
 
 	/**
 	 * Jumps to a specified instruction.
@@ -114,7 +194,20 @@ public class InstructionPointer {
 			this.offset = previousOffset;
 		}
 	}
-
+	
+	/**
+	 * Gets the nearest empty instruction slot.
+	 * @return The nearest empty slot.
+	 */
+	public int getEmptySlot() {
+		for (int i = 0; i < instructions.length; i++) {
+			if (instructions[i] == null) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	/**
 	 * Checks if there are more instructions to search through.
 	 * @return {@code true} if there are instructions to be searched, otherwise {@code false}.
