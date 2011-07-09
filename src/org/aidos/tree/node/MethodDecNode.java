@@ -78,7 +78,9 @@ public class MethodDecNode extends Node {
 		if (instructions.length > 0) {
 			sb.append("\nInstructions:");
 			for (InstructionNode instruction : instructions) {
-				sb.append("\n\t\tOpcode: "+InstructionUtil.getInstructionName(instruction.getOpcode())+" ( "+instruction.getOpcode()+" ), type: "+instruction);
+				if (instruction != null) {
+					sb.append("\n\t\tOpcode: "+InstructionUtil.getInstructionName(instruction.getOpcode())+" ( "+instruction.getOpcode()+" ), type: "+instruction);
+				}
 			}
 		}
 		return sb.toString();
@@ -99,7 +101,7 @@ public class MethodDecNode extends Node {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Sets this node's name.
 	 * @param name The name to set.

@@ -10,16 +10,9 @@ public class Test {
 
 	public static void main(String[] args) {
 		NodeTree tree = new NodeTree(Jar.load("./runescape_out.jar"));
-		for (ClassFile cf : tree.getClassFiles().values()) {
-			for (MethodDecNode mdn : cf.getMethods().values()) {
-				InstructionPointer pointer = new InstructionPointer(mdn.getInstructions());
-				for (InstructionNode current = pointer.current(); pointer.hasNext();) {
-					InstructionNode next = pointer.next();
-					InstructionNode prev = pointer.prev();
-					System.out.println(prev+", "+current+", "+next);
-				}
-			}
-		}
+		ClassFile client = tree.getClassFiles().get("client");
+		MethodDecNode main = client.getMethods().get("main");
+		System.out.println(main.info());
 	}
 
 }
