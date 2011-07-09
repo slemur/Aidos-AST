@@ -19,7 +19,7 @@ public class DivideExpression extends ArithmeticExpressionNode {
 
 	@Override
 	public void invoke() {
-		invokedValue = ((PushInstruction) left).getValue() * ((PushInstruction) right).getValue();
+		invokedValue = ((PushInstruction) left).getValue() / ((PushInstruction) right).getValue();
 	}
 
 }
