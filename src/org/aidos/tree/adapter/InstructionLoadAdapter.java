@@ -46,42 +46,42 @@ public class InstructionLoadAdapter extends MethodAdapter {
 
 	@Override
 	public void visitIntInsn(int opcode, int operand) {
-		method.getInstructions()[pointer.getOffset()] = new IntInstruction(method, pointer.getOffset(), opcode, operand);
+		method.getInstructions().add(new IntInstruction(method, pointer.getOffset(), opcode, operand));
 		pointer.increment();
 		super.visitIntInsn(opcode, operand);
 	}
 	
 	@Override
 	public void visitLdcInsn(Object cst) {
-		method.getInstructions()[pointer.getOffset()] = new LdcInstruction(method, pointer.getOffset(), cst);
+		method.getInstructions().add(new LdcInstruction(method, pointer.getOffset(), cst));
 		pointer.increment();
 		super.visitLdcInsn(cst);
 	}
 	
 	@Override
 	public void visitIincInsn(int var, int increment) {
-		method.getInstructions()[pointer.getOffset()] = new IntIncrementInstruction(method, pointer.getOffset(), var, increment);
+		method.getInstructions().add(new IntIncrementInstruction(method, pointer.getOffset(), var, increment));
 		pointer.increment();
 		super.visitIincInsn(var, increment);
 	}
 
 	@Override
 	public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
-		method.getInstructions()[pointer.getOffset()] =  new LocalVariableInstruction(method, name, desc, signature, start, end, index, pointer.getOffset(), -1);
+		method.getInstructions().add(new LocalVariableInstruction(method, name, desc, signature, start, end, index, pointer.getOffset(), -1));
 		pointer.increment();
 		super.visitLocalVariable(name, desc, signature, start, end, index);
 	}
 
 	@Override
 	public void visitFieldInsn(int opcode, String owner, String name, String desc) {
-		method.getInstructions()[pointer.getOffset()] =  new FieldInstruction(method, pointer.getOffset(), opcode, name, desc);
+		method.getInstructions().add(new FieldInstruction(method, pointer.getOffset(), opcode, name, desc));
 		pointer.increment();
 		super.visitFieldInsn(opcode, owner, name, desc);
 	}
 	
 	@Override
 	public void visitLabel(Label label) {	
-		method.getInstructions()[pointer.getOffset()] = new LabelInstruction(method, label, pointer.getOffset());
+		method.getInstructions().add(new LabelInstruction(method, label, pointer.getOffset()));
 		pointer.increment();
 		super.visitLabel(label);
 	}
@@ -108,8 +108,8 @@ public class InstructionLoadAdapter extends MethodAdapter {
 	
 	@Override
 	public void visitJumpInsn(int opcode, Label label) {
-		method.getInstructions()[pointer.getOffset()] = new JumpInstruction(method, label, pointer.getOffset());
-		method.getFlowBlocks()[pointer.getOffset()] = new FlowBlock(null, 0);
+		method.getInstructions().add(new JumpInstruction(method, label, pointer.getOffset()));
+		method.getFlowBlocks().add(new FlowBlock(null, 0));
 		pointer.increment();
 		super.visitJumpInsn(opcode, label);
 	}

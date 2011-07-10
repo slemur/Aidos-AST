@@ -1,7 +1,4 @@
-Remove bytecode stack
 Create higher level intermidiate representations
-Convert to a 3AC
-Finish parsing more types of instructions
 Finish the README (Add lisence)
-Finish documenting (maybe rewrite some of the documenting?)
-Write a ClassEncoder (to output modified files)
+Write a ClassEncoder (to output modified files) (In the works)
+Add more types of ThreeAddressFunctions.

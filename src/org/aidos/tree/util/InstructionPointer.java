@@ -1,5 +1,8 @@
 package org.aidos.tree.util;
 
+import java.util.List;
+
+import org.aidos.tree.analyzer.flow.FlowBlock;
 import org.aidos.tree.exception.NotValidInstructionException;
 import org.aidos.tree.node.InstructionNode;
 import org.aidos.tree.node.LabelInstruction;
@@ -32,8 +35,11 @@ public class InstructionPointer {
 	 * Constructs a new {@link InstructionPointer}.
 	 * @param instructions The instructions to search through.
 	 */
-	public InstructionPointer(InstructionNode[] instructions) {
-		this.instructions = instructions;
+	public InstructionPointer(List<InstructionNode> instructionList) {
+		this.instructions = new InstructionNode[instructionList.size()];
+		for (int i = 0; i < instructionList.size(); i++) {
+			instructions[i] = instructionList.get(i);
+		}
 	}
 
 	/**
@@ -89,7 +95,7 @@ public class InstructionPointer {
 		}
 		return instructions[offset--];
 	}
-	
+
 	/**
 	 * Adds an instruction to the last index.
 	 * @param add The instruction to add.
@@ -99,7 +105,7 @@ public class InstructionPointer {
 		add.setCodePosition(last);
 		instructions[last] = add;
 	}
-	
+
 	/**
 	 * Adds an instruction before a specified instruction.
 	 * @param instruction The instruction to add before.
@@ -111,7 +117,7 @@ public class InstructionPointer {
 		}
 		instructions[instruction.getCodePosition() - 1] = add;
 	}
-	
+
 	/**
 	 * Adds an instruction before a specified position.
 	 * @param pos The position to add before.
@@ -123,7 +129,7 @@ public class InstructionPointer {
 		}
 		instructions[pos - 1] = add;
 	}
-	
+
 	/**
 	 * Adds an instruction after a specified instruction.
 	 * @param instruction The instruction to add after.
@@ -135,7 +141,7 @@ public class InstructionPointer {
 		}
 		instructions[instruction.getCodePosition() + 1] = add;
 	}
-	
+
 	/**
 	 * Adds an instruction after a specified position.
 	 * @param pos The position to add after.
@@ -147,7 +153,7 @@ public class InstructionPointer {
 		}
 		instructions[pos + 1] = add;
 	}
-	
+
 	/**
 	 * Overwrites a specified instruction with another instruction.
 	 * @param instruction The instruction to overwrite.
@@ -156,7 +162,7 @@ public class InstructionPointer {
 	public void overwrite(InstructionNode instruction, InstructionNode replace) {
 		instructions[instruction.getCodePosition()] = replace;
 	}
-	
+
 	/**
 	 * Overwrites a specified instruction with another instruction.
 	 * @param pos The instruction to overwrite.
@@ -165,7 +171,7 @@ public class InstructionPointer {
 	public void overwrite(int pos, InstructionNode add) {
 		instructions[pos] = add;
 	}
-	
+
 	/**
 	 * Removes a specified instruction.
 	 * @param instruction The instruction to remove.
@@ -173,7 +179,7 @@ public class InstructionPointer {
 	public void remove(InstructionNode instruction) {
 		instructions[instruction.getCodePosition()] = null;
 	}
-	
+
 	/**
 	 * Removes an instruction at the specified index.
 	 * @param pos The index to remove the instruction from.
@@ -181,7 +187,7 @@ public class InstructionPointer {
 	public void remove(int pos) {
 		instructions[pos] = null;
 	}
-	
+
 	/**
 	 * Gets a node at a certain position.
 	 * @param pos The position to get the node at.
@@ -193,7 +199,7 @@ public class InstructionPointer {
 		}
 		return instructions[pos];
 	}
-	
+
 	/**
 	 * Gets the node at the last position.
 	 * @return The node at the last position.
@@ -201,7 +207,7 @@ public class InstructionPointer {
 	public InstructionNode getLast() {
 		return instructions[getEmptySlot() - 1];
 	}
-	
+
 	/**
 	 * Resolves a label's actual code position.
 	 * @param label The label to resolve.
@@ -210,14 +216,36 @@ public class InstructionPointer {
 	public int resolveLabelPosition(Label label) {
 		int start = offset;
 		reset();
-		while(current() != null) {
-			offset++;
-			if (current() instanceof LabelInstruction) {
-				return offset;
+		for (int i = 0; i < instructions.length; i++) {
+			InstructionNode node = instructions[i];
+			if (node instanceof LabelInstruction) {
+				LabelInstruction l = (LabelInstruction) node;
+				if (l.getLabel() == label) {
+					return offset;
+				}
+			} else {
+				offset++;
 			}
 		}
 		offset = start;
 		return -1;
+	}
+
+	/**
+	 * Resolves a flow block by it's position.
+	 * @param method The method to grab the block from.
+	 * @return The flow block.
+	 */
+	public FlowBlock resolveFlowBlock(MethodDecNode method, int pos) {
+		try {
+			int size = method.getFlowBlocks().size();
+			if (pos > size || pos < 0) {
+				return null;
+			}
+			return method.getFlowBlocks().get(pos);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	/**
@@ -246,7 +274,7 @@ public class InstructionPointer {
 			this.offset = previousOffset;
 		}
 	}
-	
+
 	/**
 	 * Jumps to an unsafe offset.
 	 * @param offset The offset to jump to.
@@ -254,7 +282,7 @@ public class InstructionPointer {
 	public void jumpUnsafe(int offset) {
 		this.offset = offset;
 	}
-	
+
 	/**
 	 * Gets the nearest empty instruction slot.
 	 * @return The nearest empty slot.
@@ -267,7 +295,7 @@ public class InstructionPointer {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Checks if there are more instructions to search through.
 	 * @return {@code true} if there are instructions to be searched, otherwise {@code false}.

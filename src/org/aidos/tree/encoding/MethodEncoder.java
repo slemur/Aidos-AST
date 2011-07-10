@@ -15,18 +15,20 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodAdapter;
 import org.objectweb.asm.MethodVisitor;
 
+/**
+ * Encodes a modified class back into bytecode format.
+ * @author `Discardedx2
+ */
 public class MethodEncoder extends MethodAdapter {
 
-	private MethodDecNode method;
-	private InstructionPointer pointer;
-
+	/**
+	 * Constructs a new {@link MethodEncoder}.
+	 * @param mv The visitor to encode.
+	 * @param method The method to encode.
+	 */
 	public MethodEncoder(MethodVisitor mv, MethodDecNode method) {
 		super(mv);
-		this.method = method;
-		this.pointer = new InstructionPointer(method.getInstructions());
-	}
-
-	public void encode() {
+		InstructionPointer pointer = new InstructionPointer(method.getInstructions());
 		super.visitCode();
 		for (Attribute attribute : method.getAttributes()) {
 			super.visitAttribute(attribute);
@@ -69,4 +71,5 @@ public class MethodEncoder extends MethodAdapter {
 		super.visitMaxs(method.getMaxStackSize(), method.getMaxLocals());
 		super.visitEnd();
 	}
+	
 }

@@ -5,7 +5,6 @@ import org.aidos.tree.ClassInterface;
 import org.aidos.tree.node.FieldDecNode;
 import org.aidos.tree.node.MethodDecNode;
 import org.objectweb.asm.Attribute;
-import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 /**
@@ -14,14 +13,13 @@ import org.objectweb.asm.ClassWriter;
  */
 public class ClassEncoder extends ClassWriter {
 
-	private ClassFile file;
-
+	/**
+	 * Constructs a new {@link ClassEncoder}.
+	 * @param file The file to encode.
+	 * @param flags The flags to set the writer with.
+	 */
 	public ClassEncoder(ClassFile file, int flags) {
 		super(flags);
-		this.file = file;
-	}
-
-	public void encode() {
 		String[] interfaces = new String[file.getInterfaces().size()];
 		for (int i = 0; i < file.getInterfaces().size(); i++) {
 			ClassInterface inter = file.getInterfaces().get(i);
@@ -46,8 +44,7 @@ public class ClassEncoder extends ClassWriter {
 				ClassInterface inter = file.getInterfaces().get(i);
 				exceptions[i] = inter.getName();
 			}
-			MethodEncoder me = new MethodEncoder(super.visitMethod(mdn.getModifier(), mdn.getName(), mdn.getDescriptor(), mdn.getSignature(), exceptions), mdn);
-			me.encode();
+			new MethodEncoder(super.visitMethod(mdn.getModifier(), mdn.getName(), mdn.getDescriptor(), mdn.getSignature(), exceptions), mdn);
 		}
 		super.visitEnd();
 	}

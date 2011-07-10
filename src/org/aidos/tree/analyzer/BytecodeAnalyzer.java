@@ -3,6 +3,7 @@ package org.aidos.tree.analyzer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aidos.tree.NodeTree;
 import org.aidos.tree.node.MethodDecNode;
 import org.aidos.tree.util.InstructionPointer;
 
@@ -22,7 +23,6 @@ public interface BytecodeAnalyzer<T extends Object> {
 	 * @param object The object to analyze.
 	 * @param method The method to analyze.
 	 * @param pointer The pointer used to calculate instructions inside of the method.
-	 * @return {@code true} if analyzation was successful, {@code false} if not.
 	 */
-	public boolean onAnalyze(Object object, MethodDecNode method, InstructionPointer pointer);
+	public void onAnalyze(Object object, NodeTree tree, MethodDecNode method, InstructionPointer pointer);
 }

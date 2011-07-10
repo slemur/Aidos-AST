@@ -9,6 +9,7 @@ import org.objectweb.asm.Attribute;
 
 /**
  * Represents a half-compiled java class in bytecode.
+ * TODO Document setters/getters at the bottom of this file.
  * @author `Discardedx2
  */
 public class ClassFile {
@@ -33,12 +34,33 @@ public class ClassFile {
 	 * This represents the super class of this file.
 	 */
 	private ClassFile superClass;
+	/**
+	 * The outer class owner of this file.
+	 */
+	/**
+	 * The outer class name of this file.
+	 */
 	private String outerClassOwner;
 	private String outerClassName;
+	/**
+	 * The outer class descriptor of this file.
+	 */
 	private String outerClassDescriptor;
+	/**
+	 * The inner class name of this file.
+	 */
 	private String innerClassName;
+	/**
+	 * The inner class outer name of this file.
+	 */
 	private String innerClassOuterName;
+	/**
+	 * The inner class inner name of this file.
+	 */
 	private String innerClassInnerName;
+	/**
+	 * The inner class modifier of this file.
+	 */
 	private int innerClassModifier;
 	/**
 	 * The interfaces which were parsed into a {@link ClassInterface} for easier access.

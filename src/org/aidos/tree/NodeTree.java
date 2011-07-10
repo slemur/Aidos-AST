@@ -11,6 +11,7 @@ import org.aidos.tree.analyzer.BytecodeAnalyzer;
 import org.aidos.tree.analyzer.flow.FlowAnalyzer;
 import org.aidos.tree.analyzer.flow.FlowBlock;
 import org.aidos.tree.node.MethodDecNode;
+import org.aidos.tree.tac.TACStructure;
 import org.aidos.tree.util.InstructionPointer;
 
 /**
@@ -35,6 +36,10 @@ public class NodeTree implements Iterable<ClassFile> {
 	 * The bytecode analyzers.
 	 */
 	private List<BytecodeAnalyzer<?>> analyzers = new ArrayList<BytecodeAnalyzer<?>>();
+	/**
+	 * The {@link TACStructure} of this tree.
+	 */
+	private TACStructure tacStructure = new TACStructure();
 
 	/**
 	 * Builds a new {@link NodeTree} hierarchy.
@@ -48,7 +53,7 @@ public class NodeTree implements Iterable<ClassFile> {
 			classFiles.put(node.getName(), node);
 		}
 		LOGGER.info("Parsed a total of "+classFiles.size()+" class files into our syntax tree.");
-		LOGGER.info("Beginning to analyze flow block...");
+		LOGGER.info("Analyzing flow block and parsing 3AC.");
 		analyze();
 	}
 
@@ -56,35 +61,33 @@ public class NodeTree implements Iterable<ClassFile> {
 	 * Analyzes the bytecode.
 	 */
 	public void analyze() {
+		long cur = System.currentTimeMillis();
+		int total = 0;
 		for (ClassFile cf : classFiles.values()) {
 			for (MethodDecNode method : cf.getMethods()) {
 				InstructionPointer pointer = new InstructionPointer(method.getInstructions());
-				for (BytecodeAnalyzer<?> analyzer : analyzers) {
-					for (FlowBlock block : method.getFlowBlocks()) {
-						if (block != null) {
-							if (block.isAnalyzed()) {
-								continue;
-							}
-							block.setAnalyzed(true);
-						}
-						if (analyzer.onAnalyze(block, method, pointer)) {
-							//LOGGER.info("Successfully analyzed the flow block in "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
-						} else {
-							//throw new AnalyzerException("Failed to analyze the flow block for: "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
-						}
-					}
-					if (!BytecodeAnalyzer.queue.isEmpty()) {
-						for (Object o : BytecodeAnalyzer.queue) {
-							if (o instanceof FlowBlock) {
-								FlowBlock block = (FlowBlock) o;
+				if (method.isAnalyzationRequired()) {
+					total += method.getFlowBlocks().size();
+					//LOGGER.info("Method: "+cf.getName()+"."+method.getName()+" "+method.getDescriptor()+" contains "+method.getFlowBlocks().size()+" flow blocks.");
+					for (BytecodeAnalyzer<?> analyzer : analyzers) {
+						for (FlowBlock block : method.getFlowBlocks()) {
+							if (block != null) {
 								if (block.isAnalyzed()) {
 									continue;
 								}
 								block.setAnalyzed(true);
-								if (block.getAnalyzer().onAnalyze(block, method, pointer)) {
-									//LOGGER.info("Successfully analyzed the sub flow block in "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
-								} else {
-									//throw new AnalyzerException("Failed to analyze the sub flow block for: "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
+							}
+							analyzer.onAnalyze(block, this, method, pointer);
+						}
+						if (!BytecodeAnalyzer.queue.isEmpty()) {
+							for (Object o : BytecodeAnalyzer.queue) {
+								if (o instanceof FlowBlock) {
+									FlowBlock block = (FlowBlock) o;
+									if (block.isAnalyzed()) {
+										continue;
+									}
+									block.setAnalyzed(true);
+									block.getAnalyzer().onAnalyze(block, this, method, pointer);
 								}
 							}
 						}
@@ -92,7 +95,7 @@ public class NodeTree implements Iterable<ClassFile> {
 				}
 			}
 		}
-		LOGGER.info("Flow block fully analyzed! The analyzer only failed because it is incomplete. Don't worry.");
+		LOGGER.info("3AC parsed! Time taken: "+(System.currentTimeMillis() - cur) +"ms. Total blocks analyzed: "+total);
 	}
 
 	@Override
@@ -122,5 +125,13 @@ public class NodeTree implements Iterable<ClassFile> {
 	 */
 	public List<BytecodeAnalyzer<?>> getAnalyzers() {
 		return analyzers;
+	}
+
+	/**
+	 * Gets the {@link TACStructure} representation of this tree.
+	 * @return The structure.
+	 */
+	public TACStructure getTacStructure() {
+		return tacStructure;
 	}
 }

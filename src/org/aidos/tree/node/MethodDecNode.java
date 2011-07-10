@@ -1,11 +1,14 @@
 package org.aidos.tree.node;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.aidos.tree.ClassException;
 import org.aidos.tree.ClassFile;
 import org.aidos.tree.analyzer.flow.FlowBlock;
+import org.aidos.tree.tac.TACStructure;
+import org.aidos.tree.tac.ThreeAddressFunction;
 import org.aidos.tree.util.InstructionUtil;
 import org.objectweb.asm.Attribute;
 
@@ -43,16 +46,22 @@ public class MethodDecNode extends Node {
 	/**
 	 * This method's instructions.
 	 */
-	private InstructionNode[] instructions = new InstructionNode[9216];
+	private List<InstructionNode> instructions = new ArrayList<InstructionNode>();
 	/**
 	 * This method's flow blocks.
 	 */
-	private FlowBlock[] flowBlocks = new FlowBlock[6000];
+	private List<FlowBlock> flowBlocks = new ArrayList<FlowBlock>();
 	/**
 	 * The parsed attributes.
 	 */
 	private List<Attribute> attributes = new ArrayList<Attribute>();
+	/**
+	 * The max locals.
+	 */
 	private int maxLocals;
+	/**
+	 * The max stack.
+	 */
 	private int maxStackSize;
 	
 
@@ -88,11 +97,34 @@ public class MethodDecNode extends Node {
 				sb.append("\n\t"+e.getType());
 			}
 		}
-		if (instructions.length > 0) {
+		if (instructions.size() > 0) {
 			sb.append("\nInstructions:");
 			for (InstructionNode instruction : instructions) {
 				if (instruction != null) {
 					sb.append("\n\t\tOpcode: "+InstructionUtil.getInstructionName(instruction.getOpcode())+" ( "+instruction.getOpcode()+" ), offset: "+instruction.getCodePosition()+", type: "+instruction);
+				}
+			}
+		}
+		return sb.toString();
+	}
+	
+	/**
+	 * Gets the info of this method's three address code by parsing it through a {@link StringBuilder}.
+	 * @return The 3AC info.
+	 */
+	public String tacInfo(TACStructure structure) {
+		StringBuilder sb = new StringBuilder("Name: "+name)
+		.append("\nOwner: "+owner.getName())
+		.append("\nModifier: "+modifier)
+		.append("\nDescriptor: "+descriptor)
+		.append("\nSignature: "+signature);
+		if (instructions.size() > 0) {
+			sb.append("\n3AC Functions:");
+			for (Iterator<ThreeAddressFunction> itr = structure.iterator(); itr.hasNext();) {
+				ThreeAddressFunction function = itr.next();
+				InstructionNode instruction = function.getInstruction();
+				if (instruction.getOwner().equals(this) && function.getFunction() != null) {
+					sb.append("\n\t\tType: "+function.getFunction()+", Opcode: "+InstructionUtil.getInstructionName(instruction.getOpcode())+" ( "+instruction.getOpcode()+" ), offset: "+instruction.getCodePosition());
 				}
 			}
 		}
@@ -183,7 +215,7 @@ public class MethodDecNode extends Node {
 	 * Gets this node's instruction set.
 	 * @return The instructions.
 	 */
-	public InstructionNode[] getInstructions() {
+	public List<InstructionNode> getInstructions() {
 		return instructions;
 	}
 
@@ -191,7 +223,7 @@ public class MethodDecNode extends Node {
 	 * Gets this method's flow block set.
 	 * @return The flow blocks.
 	 */
-	public FlowBlock[] getFlowBlocks() {
+	public List<FlowBlock> getFlowBlocks() {
 		return flowBlocks;
 	}
 	
@@ -203,19 +235,43 @@ public class MethodDecNode extends Node {
 		return attributes;
 	}
 
+	/**
+	 * Gets the max locals.
+	 * @return The max locals.
+	 */
 	public int getMaxLocals() {
 		return maxLocals;
 	}
 
+	/**
+	 * Sets the max locals.
+	 * @param maxLocals The max locals to set.
+	 */
 	public void setMaxLocals(int maxLocals) {
 		this.maxLocals = maxLocals;
 	}
 
+	/**
+	 * Gets the max stack size.
+	 * @return The max stack.
+	 */
 	public int getMaxStackSize() {
 		return maxStackSize;
 	}
 
+	/**
+	 * Sets the max stack.
+	 * @param maxStackSize The max stack to set.
+	 */
 	public void setMaxStackSize(int maxStackSize) {
 		this.maxStackSize = maxStackSize;
+	}
+
+	/**
+	 * Checks if this method must be analyzed.
+	 * @return {@code true} if analyzation is required.
+	 */
+	public boolean isAnalyzationRequired() {
+		return flowBlocks.size() > 0;
 	}
 }

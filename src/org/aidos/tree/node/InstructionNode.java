@@ -7,6 +7,10 @@ package org.aidos.tree.node;
 public abstract class InstructionNode extends Node {
 	
 	/**
+	 * Represents this node's owner.
+	 */
+	private MethodDecNode owner;
+	/**
 	 * Represents the position of this instruction in the method owner.
 	 */
 	private int codePosition;
@@ -19,9 +23,18 @@ public abstract class InstructionNode extends Node {
 	 */
 	public InstructionNode(MethodDecNode owner, int codePosition, int opcode) {
 		super(opcode);
+		this.owner = owner;
 		this.codePosition = codePosition;
 	}
 
+	/**
+	 * Gets this node's owner.
+	 * @return This node's owner.
+	 */
+	public MethodDecNode getOwner() {
+		return owner;
+	}
+	
 	/**
 	 * Gets the code position.
 	 * @return The code position.
@@ -37,5 +50,4 @@ public abstract class InstructionNode extends Node {
 	public void setCodePosition(int codePosition) {
 		this.codePosition = codePosition;
 	}
-	
 }

@@ -17,7 +17,7 @@ import org.aidos.tree.encoding.ClassEncoder;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.commons.RemappingClassAdapter;
+import org.objectweb.asm.util.CheckClassAdapter;
 
 /**
  * This class is used to load and store files from a jar file.
@@ -85,16 +85,12 @@ public class Jar {
 	 * @throws IOException If we failed to write to the jar.
 	 */
 	public void write(String jarPath, Map<String, ClassFile> files) throws FileNotFoundException, IOException {
-		ClassRemapper remapper = new ClassRemapper();
 		JarOutputStream jos = new JarOutputStream(new FileOutputStream(jarPath));
 		try {
 			for (ClassFile file : files.values()) {
-				ClassEncoder encoder = new ClassEncoder(file, ClassWriter.COMPUTE_MAXS);
-				encoder.encode();
-				ClassWriter modifiedWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+				ClassWriter encoder = new ClassEncoder(file, ClassWriter.COMPUTE_FRAMES);
 				ClassReader reader = new ClassReader(encoder.toByteArray());
-				reader.accept(new RemappingClassAdapter(modifiedWriter, remapper), 0);
-				//byte[] bytes = modifiedWriter.toByteArray();
+				reader.accept(new CheckClassAdapter(encoder, true), 0);
 				byte[] bytes = encoder.toByteArray();
 				jos.putNextEntry(new JarEntry(file.getName().concat(".class")));
 				jos.write(bytes);
