@@ -68,7 +68,7 @@ public class NodeTree implements Iterable<ClassFile> {
 							block.setAnalyzed(true);
 						}
 						if (analyzer.onAnalyze(block, method, pointer)) {
-							LOGGER.info("Successfully analyzed the flow block in "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
+							//LOGGER.info("Successfully analyzed the flow block in "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
 						} else {
 							//throw new AnalyzerException("Failed to analyze the flow block for: "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
 						}
@@ -82,7 +82,7 @@ public class NodeTree implements Iterable<ClassFile> {
 								}
 								block.setAnalyzed(true);
 								if (block.getAnalyzer().onAnalyze(block, method, pointer)) {
-									LOGGER.info("Successfully analyzed the sub flow block in "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
+									//LOGGER.info("Successfully analyzed the sub flow block in "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
 								} else {
 									//throw new AnalyzerException("Failed to analyze the sub flow block for: "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
 								}

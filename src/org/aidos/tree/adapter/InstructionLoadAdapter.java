@@ -3,13 +3,15 @@ package org.aidos.tree.adapter;
 import org.aidos.tree.ClassException;
 import org.aidos.tree.analyzer.flow.FlowBlock;
 import org.aidos.tree.node.FieldInstruction;
+import org.aidos.tree.node.IntIncrementInstruction;
 import org.aidos.tree.node.IntInstruction;
 import org.aidos.tree.node.JumpInstruction;
 import org.aidos.tree.node.LabelInstruction;
 import org.aidos.tree.node.LdcInstruction;
-import org.aidos.tree.node.LocalVarNode;
+import org.aidos.tree.node.LocalVariableInstruction;
 import org.aidos.tree.node.MethodDecNode;
 import org.aidos.tree.util.InstructionPointer;
+import org.objectweb.asm.Attribute;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodAdapter;
 import org.objectweb.asm.MethodVisitor;
@@ -37,6 +39,10 @@ public class InstructionLoadAdapter extends MethodAdapter {
 		this.method = method;
 		this.pointer = new InstructionPointer(method.getInstructions());
 	}
+	
+	public void prepareForEncode() {
+		
+	}
 
 	@Override
 	public void visitIntInsn(int opcode, int operand) {
@@ -51,10 +57,17 @@ public class InstructionLoadAdapter extends MethodAdapter {
 		pointer.increment();
 		super.visitLdcInsn(cst);
 	}
+	
+	@Override
+	public void visitIincInsn(int var, int increment) {
+		method.getInstructions()[pointer.getOffset()] = new IntIncrementInstruction(method, pointer.getOffset(), var, increment);
+		pointer.increment();
+		super.visitIincInsn(var, increment);
+	}
 
 	@Override
 	public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
-		method.getInstructions()[pointer.getOffset()] =  new LocalVarNode(method, name, desc, signature, start, end, index, pointer.getOffset(), -1);
+		method.getInstructions()[pointer.getOffset()] =  new LocalVariableInstruction(method, name, desc, signature, start, end, index, pointer.getOffset(), -1);
 		pointer.increment();
 		super.visitLocalVariable(name, desc, signature, start, end, index);
 	}
@@ -78,6 +91,19 @@ public class InstructionLoadAdapter extends MethodAdapter {
 		ClassException exception = new ClassException(method, type, start, handler, end);
 		method.getExceptions().add(exception);
 		super.visitTryCatchBlock(start, end, handler, type);
+	}
+	
+	@Override
+	public void visitAttribute(Attribute attr) {
+		method.getAttributes().add(attr);
+		super.visitAttribute(attr);
+	}
+	
+	@Override
+	public void visitMaxs(int maxStack, int maxLocals) {
+		method.setMaxStackSize(maxStack);
+		method.setMaxLocals(maxLocals);
+		super.visitMaxs(maxStack, maxLocals);
 	}
 	
 	@Override

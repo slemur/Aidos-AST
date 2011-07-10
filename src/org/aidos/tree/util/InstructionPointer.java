@@ -76,7 +76,7 @@ public class InstructionPointer {
 		if (offset + 1 > instructions.length) {
 			throw new NotValidInstructionException("Next instruction is unavailable.");
 		}
-		return instructions[offset + 1];
+		return instructions[offset++];
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class InstructionPointer {
 		if (offset - 1 < 0) {
 			throw new NotValidInstructionException("Previous instruction is unavailable.");
 		}
-		return instructions[offset - 1];
+		return instructions[offset--];
 	}
 	
 	/**
@@ -245,6 +245,14 @@ public class InstructionPointer {
 		if (previousOffset != -1) {
 			this.offset = previousOffset;
 		}
+	}
+	
+	/**
+	 * Jumps to an unsafe offset.
+	 * @param offset The offset to jump to.
+	 */
+	public void jumpUnsafe(int offset) {
+		this.offset = offset;
 	}
 	
 	/**

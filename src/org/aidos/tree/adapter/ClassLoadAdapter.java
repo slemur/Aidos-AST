@@ -5,6 +5,7 @@ import org.aidos.tree.ClassInterface;
 import org.aidos.tree.Jar;
 import org.aidos.tree.node.FieldDecNode;
 import org.aidos.tree.node.MethodDecNode;
+import org.objectweb.asm.Attribute;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.EmptyVisitor;
@@ -61,7 +62,30 @@ public class ClassLoadAdapter extends EmptyVisitor {
 		classFile.getFields().add(fdn);
 		return super.visitField(access, name, desc, signature, value);
 	}
+	
+	@Override
+	public void visitAttribute(Attribute attribute) {
+		classFile.getAttributes().add(attribute);
+		super.visitAttribute(attribute);
+	}
+	
+	@Override
+	public void visitOuterClass(String owner, String name, String desc)	{
+		classFile.setOuterClassOwner(owner);
+		classFile.setOuterClassName(name);
+		classFile.setOuterClassDescriptor(desc);
+		super.visitOuterClass(owner, name, desc);
+	}
 
+	@Override
+	public void visitInnerClass(String name, String outerName, String innerName, int access) {
+		classFile.setInnerClassName(name);
+		classFile.setInnerClassOuterName(outerName);
+		classFile.setInnerClassInnerName(innerName);
+		classFile.setInnerClassModifier(access);
+		super.visitInnerClass(name, outerName, innerName, access);
+	}
+	
 	/**
 	 * Gets the class that represents the loaded bytecode.
 	 * @return The class.

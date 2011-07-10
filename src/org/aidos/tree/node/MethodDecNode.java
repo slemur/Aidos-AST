@@ -7,6 +7,7 @@ import org.aidos.tree.ClassException;
 import org.aidos.tree.ClassFile;
 import org.aidos.tree.analyzer.flow.FlowBlock;
 import org.aidos.tree.util.InstructionUtil;
+import org.objectweb.asm.Attribute;
 
 
 /**
@@ -42,11 +43,18 @@ public class MethodDecNode extends Node {
 	/**
 	 * This method's instructions.
 	 */
-	private InstructionNode[] instructions = new InstructionNode[9200];
+	private InstructionNode[] instructions = new InstructionNode[9216];
 	/**
 	 * This method's flow blocks.
 	 */
 	private FlowBlock[] flowBlocks = new FlowBlock[6000];
+	/**
+	 * The parsed attributes.
+	 */
+	private List<Attribute> attributes = new ArrayList<Attribute>();
+	private int maxLocals;
+	private int maxStackSize;
+	
 
 	/**
 	 * Constructs a new {@link MethodDecNode}.
@@ -185,5 +193,29 @@ public class MethodDecNode extends Node {
 	 */
 	public FlowBlock[] getFlowBlocks() {
 		return flowBlocks;
+	}
+	
+	/**
+	 * Gets the attributes.
+	 * @return the attributes
+	 */
+	public List<Attribute> getAttributes() {
+		return attributes;
+	}
+
+	public int getMaxLocals() {
+		return maxLocals;
+	}
+
+	public void setMaxLocals(int maxLocals) {
+		this.maxLocals = maxLocals;
+	}
+
+	public int getMaxStackSize() {
+		return maxStackSize;
+	}
+
+	public void setMaxStackSize(int maxStackSize) {
+		this.maxStackSize = maxStackSize;
 	}
 }

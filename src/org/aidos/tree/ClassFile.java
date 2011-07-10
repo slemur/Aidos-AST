@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.aidos.tree.node.FieldDecNode;
 import org.aidos.tree.node.MethodDecNode;
+import org.objectweb.asm.Attribute;
 
 /**
  * Represents a half-compiled java class in bytecode.
@@ -32,6 +33,13 @@ public class ClassFile {
 	 * This represents the super class of this file.
 	 */
 	private ClassFile superClass;
+	private String outerClassOwner;
+	private String outerClassName;
+	private String outerClassDescriptor;
+	private String innerClassName;
+	private String innerClassOuterName;
+	private String innerClassInnerName;
+	private int innerClassModifier;
 	/**
 	 * The interfaces which were parsed into a {@link ClassInterface} for easier access.
 	 */
@@ -44,11 +52,14 @@ public class ClassFile {
 	 * The parsed fields stored in seperate {@link FieldDecNode} for easy access.
 	 */
 	private List<FieldDecNode> fields = new ArrayList<FieldDecNode>();
+	/**
+	 * The parsed attributes.
+	 */
+	private List<Attribute> attributes = new ArrayList<Attribute>();
 	
 	public ClassFile(int classVersion) {
 		this.classVersion = classVersion;
 	}
-	
 
 	/**
 	 * Gets the class version.
@@ -152,5 +163,69 @@ public class ClassFile {
 	 */
 	public List<FieldDecNode> getFields() {
 		return fields;
+	}
+	
+	/**
+	 * Gets the attributes.
+	 * @return the attributes
+	 */
+	public List<Attribute> getAttributes() {
+		return attributes;
+	}
+
+	public String getOuterClassOwner() {
+		return outerClassOwner;
+	}
+
+	public void setOuterClassOwner(String outerClassOwner) {
+		this.outerClassOwner = outerClassOwner;
+	}
+
+	public String getOuterClassName() {
+		return outerClassName;
+	}
+
+	public void setOuterClassName(String outerClassName) {
+		this.outerClassName = outerClassName;
+	}
+
+	public String getOuterClassDescriptor() {
+		return outerClassDescriptor;
+	}
+
+	public void setOuterClassDescriptor(String outerClassDescriptor) {
+		this.outerClassDescriptor = outerClassDescriptor;
+	}
+
+	public String getInnerClassName() {
+		return innerClassName;
+	}
+
+	public void setInnerClassName(String innerClassName) {
+		this.innerClassName = innerClassName;
+	}
+
+	public String getInnerClassOuterName() {
+		return innerClassOuterName;
+	}
+
+	public void setInnerClassOuterName(String innerClassOuterName) {
+		this.innerClassOuterName = innerClassOuterName;
+	}
+
+	public String getInnerClassInnerName() {
+		return innerClassInnerName;
+	}
+
+	public void setInnerClassInnerName(String innerClassInnerName) {
+		this.innerClassInnerName = innerClassInnerName;
+	}
+
+	public int getInnerClassModifier() {
+		return innerClassModifier;
+	}
+
+	public void setInnerClassModifier(int innerClassModifier) {
+		this.innerClassModifier = innerClassModifier;
 	}
 }

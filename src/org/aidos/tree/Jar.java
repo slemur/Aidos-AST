@@ -13,8 +13,11 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 
 import org.aidos.tree.adapter.ClassLoadAdapter;
+import org.aidos.tree.encoding.ClassEncoder;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.commons.RemappingClassAdapter;
 
 /**
  * This class is used to load and store files from a jar file.
@@ -81,18 +84,20 @@ public class Jar {
 	 * @throws FileNotFoundException If the jar was unable to be created/overwritten.
 	 * @throws IOException If we failed to write to the jar.
 	 */
-	@SuppressWarnings("unused")
 	public void write(String jarPath, Map<String, ClassFile> files) throws FileNotFoundException, IOException {
-		
+		ClassRemapper remapper = new ClassRemapper();
 		JarOutputStream jos = new JarOutputStream(new FileOutputStream(jarPath));
 		try {
 			for (ClassFile file : files.values()) {
-				//ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-				//ClassReader reader = file.getReader(); // for writing you must create your own classreader if you want to write modified bytecode
-				///reader.accept(new CheckClassAdapter(writer, true), 0);
-				//byte[] bytes = writer.toByteArray();
-				//jos.putNextEntry(new JarEntry(file.getName().concat(".class")));
-				//jos.write(bytes);
+				ClassEncoder encoder = new ClassEncoder(file, ClassWriter.COMPUTE_MAXS);
+				encoder.encode();
+				ClassWriter modifiedWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+				ClassReader reader = new ClassReader(encoder.toByteArray());
+				reader.accept(new RemappingClassAdapter(modifiedWriter, remapper), 0);
+				//byte[] bytes = modifiedWriter.toByteArray();
+				byte[] bytes = encoder.toByteArray();
+				jos.putNextEntry(new JarEntry(file.getName().concat(".class")));
+				jos.write(bytes);
 			}
 		} finally { 
 			jos.close();
