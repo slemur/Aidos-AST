@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import org.aidos.tree.analyzer.BytecodeAnalyzer;
 import org.aidos.tree.analyzer.flow.FlowAnalyzer;
 import org.aidos.tree.analyzer.flow.FlowBlock;
-import org.aidos.tree.exception.AnalyzerException;
 import org.aidos.tree.node.MethodDecNode;
 import org.aidos.tree.util.InstructionPointer;
 
