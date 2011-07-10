@@ -58,51 +58,42 @@ public class NodeTree implements Iterable<ClassFile> {
 	 */
 	public void analyze() {
 		for (ClassFile cf : classFiles.values()) {
-			try {
-				for (MethodDecNode method : cf.getMethods()) {
-					InstructionPointer pointer = new InstructionPointer(method.getInstructions());
-					for (BytecodeAnalyzer<?> analyzer : analyzers) {
-						for (FlowBlock block : method.getFlowBlocks()) {
-							if (block != null) {
+			for (MethodDecNode method : cf.getMethods()) {
+				InstructionPointer pointer = new InstructionPointer(method.getInstructions());
+				for (BytecodeAnalyzer<?> analyzer : analyzers) {
+					for (FlowBlock block : method.getFlowBlocks()) {
+						if (block != null) {
+							if (block.isAnalyzed()) {
+								continue;
+							}
+							block.setAnalyzed(true);
+						}
+						if (analyzer.onAnalyze(block, method, pointer)) {
+							LOGGER.info("Successfully analyzed the flow block in "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
+						} else {
+							//throw new AnalyzerException("Failed to analyze the flow block for: "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
+						}
+					}
+					if (!BytecodeAnalyzer.queue.isEmpty()) {
+						for (Object o : BytecodeAnalyzer.queue) {
+							if (o instanceof FlowBlock) {
+								FlowBlock block = (FlowBlock) o;
 								if (block.isAnalyzed()) {
 									continue;
 								}
 								block.setAnalyzed(true);
-							}
-							if (block.getAnalyzer() != null) {
-								block.getAnalyzer().onAnalyze(block, method, pointer);
-							} else if (analyzer.onAnalyze(block, method, pointer)) {
-								//LOGGER.info("Successfully analyzed the flow block in "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
-							} else {
-								throw new AnalyzerException("Failed to analyze the flow block for: "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
-							}
-						}
-						if (!BytecodeAnalyzer.queue.isEmpty()) {
-							for (Object o : BytecodeAnalyzer.queue) {
-								if (o instanceof FlowBlock) {
-									FlowBlock block = (FlowBlock) o;
-									if (block.isAnalyzed()) {
-										continue;
-									}
-									block.setAnalyzed(true);
-									if (block.getAnalyzer() != null) {
-										block.getAnalyzer().onAnalyze(block, method, pointer);
-									} else if (analyzer.onAnalyze(block, method, pointer)) {
-										//	LOGGER.info("Successfully analyzed the sub flow block in "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
-									} else {
-										throw new AnalyzerException("Failed to analyze the sub flow block for: "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
-									}
+								if (block.getAnalyzer().onAnalyze(block, method, pointer)) {
+									LOGGER.info("Successfully analyzed the sub flow block in "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
+								} else {
+									//throw new AnalyzerException("Failed to analyze the sub flow block for: "+cf.getName()+"."+method.getName()+" "+method.getDescriptor());
 								}
 							}
 						}
 					}
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				continue;
 			}
 		}
-		LOGGER.info("Flow block fully analyzed! If this failed to analyze a lot of blocks, that is because\nthis is just the start of the analyzer. It will be continued soon.");
+		LOGGER.info("Flow block fully analyzed! The analyzer only failed because it is incomplete. Don't worry.");
 	}
 
 	@Override

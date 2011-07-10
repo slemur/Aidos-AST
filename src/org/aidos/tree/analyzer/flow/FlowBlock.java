@@ -19,6 +19,11 @@ public class FlowBlock {
 	 */
 	private boolean analyzed;
 	
+	/**
+	 * Constructs a new flow block.
+	 * @param analyzer The analyzer used to analyze this block.
+	 * @param flowStartOffset The start offset of this block.
+	 */
 	public FlowBlock(FlowAnalyzer analyzer, int flowStartOffset) {
 		this.analyzer = analyzer;
 		this.flowStartOffset = flowStartOffset;
