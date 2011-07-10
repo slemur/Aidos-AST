@@ -1,8 +1,5 @@
 package org.aidos.tree.encoding;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.aidos.tree.node.FieldInstruction;
 import org.aidos.tree.node.InstructionNode;
 import org.aidos.tree.node.IntIncrementInstruction;
@@ -22,7 +19,6 @@ public class MethodEncoder extends MethodAdapter {
 
 	private MethodDecNode method;
 	private InstructionPointer pointer;
-	private List<Label[]> labels = new ArrayList<Label[]>();
 
 	public MethodEncoder(MethodVisitor mv, MethodDecNode method) {
 		super(mv);
@@ -35,7 +31,6 @@ public class MethodEncoder extends MethodAdapter {
 		for (Attribute attribute : method.getAttributes()) {
 			super.visitAttribute(attribute);
 		}
-		labels.addAll(getLabels());
 		pointer.jumpUnsafe(-1);
 		while(pointer.next() != null) {
 			InstructionNode current = pointer.current();
@@ -74,21 +69,4 @@ public class MethodEncoder extends MethodAdapter {
 		super.visitMaxs(method.getMaxStackSize(), method.getMaxLocals());
 		super.visitEnd();
 	}
-
-	public List<Label[]> getLabels() {
-		List<Label[]> labels = new ArrayList<Label[]>();
-		int offset = 0;
-		while (pointer.get(offset) != null) {
-			InstructionNode insn = pointer.get(offset);
-			if (insn instanceof LabelInstruction) {
-				Label[] larray = new Label[2];
-				larray[0] = ((LabelInstruction)insn).getLabel();
-				larray[1] = new Label();
-				labels.add(larray);
-			}
-			offset++;
-		}
-		return labels;
-	}
-
 }
