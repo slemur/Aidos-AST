@@ -53,7 +53,7 @@ public class NodeTree implements Iterable<ClassFile> {
 			classFiles.put(node.getName(), node);
 		}
 		LOGGER.info("Parsed a total of "+classFiles.size()+" class files into our syntax tree.");
-		LOGGER.info("Analyzing flow block and parsing 3AC.");
+		LOGGER.info("Analyzing flow block and building the 3AC structure.");
 		analyze();
 	}
 

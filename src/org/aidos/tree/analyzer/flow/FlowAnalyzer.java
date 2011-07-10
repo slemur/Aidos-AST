@@ -5,8 +5,11 @@ import java.util.logging.Logger;
 import org.aidos.tree.NodeTree;
 import org.aidos.tree.analyzer.BytecodeAnalyzer;
 import org.aidos.tree.exception.InstructionNotSupportedException;
+import org.aidos.tree.node.FieldInstruction;
 import org.aidos.tree.node.InstructionNode;
+import org.aidos.tree.node.IntInstruction;
 import org.aidos.tree.node.JumpInstruction;
+import org.aidos.tree.node.LdcInstruction;
 import org.aidos.tree.node.MethodDecNode;
 import org.aidos.tree.tac.ThreeAddressFunction;
 import org.aidos.tree.util.InstructionPointer;
@@ -64,11 +67,25 @@ public class FlowAnalyzer implements BytecodeAnalyzer<FlowBlock> {
 					}
 				} else {
 					ThreeAddressFunction function = new ThreeAddressFunction(current);
-					for (int push : PUSH_OPCODES) {
-						if (current.getOpcode() == push) {
-							function.setFunction("Push");
+					if (current instanceof IntInstruction) {
+						function.setFunction("Push");
+					} else if (current instanceof LdcInstruction) {
+						Object val = ((LdcInstruction) current).getConstant();
+						if (val instanceof String) {
+							function.setFunction("Ldc_String");
+						} else {
+							function.setFunction("Ldc_Number");
 						}
-						break;
+					} else if (current instanceof FieldInstruction) {
+						if (current.getOpcode() == Opcodes.PUTSTATIC) {
+							function.setFunction("Push_Static_Field");
+						} else if (current.getOpcode() == Opcodes.PUTFIELD) {
+							function.setFunction("Push_Field");
+						} else if (current.getOpcode() == Opcodes.GETSTATIC) {
+							function.setFunction("Get_Static_Field");
+						} else if (current.getOpcode() == Opcodes.GETFIELD) {
+							function.setFunction("Get_Field");
+						}
 					}
 					if (function.getFunction() != null) {
 						tree.getTacStructure().store(function);
@@ -79,3 +96,4 @@ public class FlowAnalyzer implements BytecodeAnalyzer<FlowBlock> {
 	}
 
 }
+

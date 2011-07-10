@@ -11,6 +11,7 @@ public class Test {
 		for (MethodDecNode mdn : client.getMethods()) {
 			if (mdn.getName().equals("main")) {
 				System.out.println(mdn.tacInfo(tree.getTacStructure()));
+				//System.out.println(mdn.info());
 				return;
 			}
 		}
