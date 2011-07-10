@@ -7,10 +7,10 @@ import org.aidos.tree.analyzer.BytecodeAnalyzer;
 import org.aidos.tree.exception.InstructionNotSupportedException;
 import org.aidos.tree.node.FieldInstruction;
 import org.aidos.tree.node.InstructionNode;
-import org.aidos.tree.node.IntInstruction;
 import org.aidos.tree.node.JumpInstruction;
 import org.aidos.tree.node.LdcInstruction;
 import org.aidos.tree.node.MethodDecNode;
+import org.aidos.tree.node.PushInstruction;
 import org.aidos.tree.tac.ThreeAddressFunction;
 import org.aidos.tree.util.InstructionPointer;
 import org.objectweb.asm.Opcodes;
@@ -61,21 +61,14 @@ public class FlowAnalyzer implements BytecodeAnalyzer<FlowBlock> {
 							queue.add(target);
 						} else {
 							ThreeAddressFunction function = new ThreeAddressFunction(jump);
-							function.setFunction("JUMP_TO");
+							function.setFunction("Jump");
 							tree.getTacStructure().store(function);
 						}
 					}
 				} else {
 					ThreeAddressFunction function = new ThreeAddressFunction(current);
-					if (current instanceof IntInstruction) {
+					if (current instanceof PushInstruction) {
 						function.setFunction("Push");
-					} else if (current instanceof LdcInstruction) {
-						Object val = ((LdcInstruction) current).getConstant();
-						if (val instanceof String) {
-							function.setFunction("Ldc_String");
-						} else {
-							function.setFunction("Ldc_Number");
-						}
 					} else if (current instanceof FieldInstruction) {
 						if (current.getOpcode() == Opcodes.PUTSTATIC) {
 							function.setFunction("Push_Static_Field");

@@ -124,7 +124,7 @@ public class MethodDecNode extends Node {
 				ThreeAddressFunction function = itr.next();
 				InstructionNode instruction = function.getInstruction();
 				if (instruction.getOwner().equals(this) && function.getFunction() != null) {
-					sb.append("\n\t\tType: "+function.getFunction()+", Opcode: "+instruction.getOpcode()+", offset: "+instruction.getCodePosition());
+					sb.append("\n\t\tFunction: "+function.getFunction()+", opcode: "+instruction.getOpcode()+", offset: "+instruction.getCodePosition()+", type: "+instruction);
 				}
 			}
 		}

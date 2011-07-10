@@ -15,6 +15,11 @@ public class TACStructure implements Iterable<ThreeAddressFunction> {
 	 */
 	private List<ThreeAddressFunction> functions = new ArrayList<ThreeAddressFunction>();
 	
+	@Override
+	public Iterator<ThreeAddressFunction> iterator() {
+		return functions.iterator();
+	}
+	
 	/**
 	 * Stores a function.
 	 * @param function The function to store.
@@ -42,8 +47,12 @@ public class TACStructure implements Iterable<ThreeAddressFunction> {
 		return functions.get(index);
 	}
 	
-	@Override
-	public Iterator<ThreeAddressFunction> iterator() {
-		return functions.iterator();
+	/**
+	 * Gets the parsed functions.
+	 * @return The functions.
+	 */
+	public List<ThreeAddressFunction> getFunctions() {
+		return functions;
 	}
+	
 }
