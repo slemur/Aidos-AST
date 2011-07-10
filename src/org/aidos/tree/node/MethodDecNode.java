@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.aidos.tree.ClassException;
 import org.aidos.tree.ClassFile;
+import org.aidos.tree.FlowBlock;
 import org.aidos.tree.util.InstructionUtil;
 
 
@@ -42,6 +43,10 @@ public class MethodDecNode extends Node {
 	 * This method's instructions.
 	 */
 	private InstructionNode[] instructions = new InstructionNode[9200];
+	/**
+	 * This method's flow blocks.
+	 */
+	private FlowBlock[] flowBlocks = new FlowBlock[6000];
 
 	/**
 	 * Constructs a new {@link MethodDecNode}.
@@ -172,5 +177,13 @@ public class MethodDecNode extends Node {
 	 */
 	public InstructionNode[] getInstructions() {
 		return instructions;
+	}
+
+	/**
+	 * Gets this method's flow block set.
+	 * @return The flow blocks.
+	 */
+	public FlowBlock[] getFlowBlocks() {
+		return flowBlocks;
 	}
 }

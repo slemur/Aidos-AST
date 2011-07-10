@@ -10,6 +10,10 @@ public abstract class Node {
 	 * The opcode of this node's instruction.
 	 */
 	private int opcode;
+	/**
+	 * {@code true} if this node has been analyzed. Otherwise false.
+	 */
+	private boolean analyzed;
 	
 	/**
 	 * Constructs a new node.
@@ -33,6 +37,22 @@ public abstract class Node {
 	 */
 	public void setOpcode(int opcode) {
 		this.opcode = opcode;
+	}
+
+	/**
+	 * Checks if this node has been analyzed or not.
+	 * @return {@code true} if this node has been analyzed. Otherwise false.
+	 */
+	public boolean isAnalyzed() {
+		return analyzed;
+	}
+
+	/**
+	 * Sets this class analyzed.
+	 * @param analyzed The analyzed value to set.
+	 */
+	public void setAnalyzed(boolean analyzed) {
+		this.analyzed = analyzed;
 	}
 	
 	

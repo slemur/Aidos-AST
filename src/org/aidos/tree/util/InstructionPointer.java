@@ -2,7 +2,9 @@ package org.aidos.tree.util;
 
 import org.aidos.tree.exception.NotValidInstructionException;
 import org.aidos.tree.node.InstructionNode;
+import org.aidos.tree.node.LabelInstruction;
 import org.aidos.tree.node.MethodDecNode;
+import org.objectweb.asm.Label;
 
 /**
  * This class is used to point towards different types of {@link InstructionNode}s inside
@@ -198,6 +200,24 @@ public class InstructionPointer {
 	 */
 	public InstructionNode getLast() {
 		return instructions[getEmptySlot() - 1];
+	}
+	
+	/**
+	 * Resolves a label's actual code position.
+	 * @param label The label to resolve.
+	 * @return The label's code position.
+	 */
+	public int resolveLabelPosition(Label label) {
+		int start = offset;
+		reset();
+		while(current() != null) {
+			offset++;
+			if (current() instanceof LabelInstruction) {
+				return offset;
+			}
+		}
+		offset = start;
+		return -1;
 	}
 
 	/**
