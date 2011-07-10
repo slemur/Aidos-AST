@@ -1,7 +1,7 @@
 package org.aidos.tree.adapter;
 
 import org.aidos.tree.ClassException;
-import org.aidos.tree.FlowBlock;
+import org.aidos.tree.analyzer.flow.FlowBlock;
 import org.aidos.tree.node.FieldInstruction;
 import org.aidos.tree.node.IntInstruction;
 import org.aidos.tree.node.JumpInstruction;

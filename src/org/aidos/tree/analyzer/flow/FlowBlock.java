@@ -1,6 +1,5 @@
-package org.aidos.tree;
+package org.aidos.tree.analyzer.flow;
 
-import org.aidos.tree.analyzer.flow.FlowAnalyzer;
 
 
 public class FlowBlock {

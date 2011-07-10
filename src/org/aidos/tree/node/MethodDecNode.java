@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.aidos.tree.ClassException;
 import org.aidos.tree.ClassFile;
-import org.aidos.tree.FlowBlock;
+import org.aidos.tree.analyzer.flow.FlowBlock;
 import org.aidos.tree.util.InstructionUtil;
 
 

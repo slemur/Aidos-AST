@@ -1,6 +1,5 @@
 package org.aidos.tree.analyzer.flow;
 
-import org.aidos.tree.FlowBlock;
 import org.aidos.tree.analyzer.BytecodeAnalyzer;
 import org.aidos.tree.exception.InstructionNotSupportedException;
 import org.aidos.tree.node.InstructionNode;
